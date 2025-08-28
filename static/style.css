@@ -1,0 +1,174 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+body, html {
+  height: 100%;
+  background-color: #f9fafb;
+  overflow: hidden;
+  transition: background 0.3s ease;
+}
+
+body.dark {
+  background-color: #121212;
+  color: white;
+}
+
+.app {
+  display: flex;
+  height: 100vh;
+}
+
+
+.sidebar {
+  width: 260px;
+  background: #1e293b;
+  color: white;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.sidebar h2 {
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+.sidebar ul {
+  list-style: none;
+}
+
+.sidebar li {
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #334155;
+  padding: 8px;
+  border-radius: 6px;
+  transition: all 0.3s;
+}
+
+.sidebar li:hover {
+  background: #475569;
+}
+
+.sidebar button {
+  background: transparent;
+  border: none;
+  color: #ff6b6b;
+  cursor: pointer;
+}
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  background: #f0f4f8;
+  padding-top: 50px;
+}
+
+body.dark .main {
+  background: #1a1a1a;
+}
+
+.topbar {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  background: #e2e8f0;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+}
+
+body.dark .topbar {
+  background: #2c2c2c;
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.topbar button {
+  background: #6366f1;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.topbar button:hover {
+  background: #4f46e5;
+}
+
+.response-container {
+  padding: 80px 20px 120px;
+  overflow-y: auto;
+  height: 100%;
+}
+
+#response {
+  white-space: pre-wrap;
+  line-height: 1.6;
+  font-size: 1rem;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 260px;
+  right: 0;
+  padding: 10px 20px;
+  background: #e2e8f0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+body.dark .bottom-bar {
+  background: #2c2c2c;
+}
+
+.bottom-bar textarea {
+  flex: 1;
+  resize: none;
+  padding: 10px;
+  height: 50px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.bottom-bar button {
+  background: #10b981;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+.bottom-bar button:hover {
+  background: #059669;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

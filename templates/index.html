@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ExaminationAI</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="app">
+
+  
+    <div class="sidebar">
+      <h2>📜 History</h2>
+      <ul id="historyList"></ul>
+    </div>
+
+    <!-- MAIN PAGE MANAKI KANAPADE DHII -->
+    <div class="main">
+      <div class="topbar">
+        <span class="logo">📘 ExaminationAI</span>
+        <button onclick="toggleDarkMode()">🌙</button>
+        <button onclick="startNewChat()">➕ New Chat</button>
+        <a href="/logout"><button>🚪 Logout</button></a>
+      </div>
+
+      
+      <div id="responseContainer" class="response-container">
+        <div id="response"></div>
+      </div>
+
+    
+      <div class="bottom-bar">
+        <textarea id="question" placeholder="Type your exam question here..."></textarea>
+        <div class="difficulty-buttons">
+          <button onclick="sendQuestion('easy')">🟢 Easy</button>
+          <button onclick="sendQuestion('moderate')">🟡 Moderate</button>
+          <button onclick="sendQuestion('advanced')">🔴 Advanced</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+<script>
+let historyData = [];
+
+function toggleDarkMode() {
+  document.body.classList.toggle("dark");
+}
+
+function startNewChat() {
+  document.getElementById("question").value = "";
+  document.getElementById("response").innerHTML = "";
+}
+
+async function loadHistory() {
+  const res = await fetch("/history");
+  const data = await res.json();
+  historyData = data;
+  const list = document.getElementById("historyList");
+  list.innerHTML = "";
+  data.forEach((item) => {
+    const li = document.createElement("li");
+
+    const textSpan = document.createElement("span");
+    textSpan.innerText = `📝 ${item.question.substring(0,20)}...`;
+    textSpan.onclick = () => {
+      document.getElementById("question").value = item.question;
+      document.getElementById("response").innerHTML = item.answer;
+    };
+
+    const delBtn = document.createElement("button");
+    delBtn.innerText = "❌";
+    delBtn.onclick = async () => {
+      await fetch(`/delete/${item.id}`, { method: "DELETE" });
+      loadHistory();
+    };
+
+    li.appendChild(textSpan);
+    li.appendChild(delBtn);
+    list.appendChild(li);
+  });
+}
+
+async function sendQuestion(level) {
+  const question = document.getElementById("question").value;
+  const resBox = document.getElementById("response");
+  if (!question.trim()) {
+    resBox.innerHTML = "⚠️ Please enter a question first.";
+    return;
+  }
+  resBox.innerHTML = "⏳ Thinking...";
+  const response = await fetch("/ask", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ message: question, level: level }),
+  });
+  const data = await response.json();
+  if (data.response) {
+    resBox.innerHTML = data.response;
+    loadHistory();
+  } else {
+    resBox.innerHTML = "⚠️ " + data.error;
+  }
+}
+
+window.onload = loadHistory;
+</script>
+</body>
+</html>
